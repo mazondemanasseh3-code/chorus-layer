@@ -4,8 +4,6 @@ import streamlit as st
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 
-client = OpenAI()
-
 def generate_workflow(user_goal):
     prompt = f"""
 You are the Director Agent in a multi-agent AI system.
@@ -47,4 +45,5 @@ User Goal:
     )
 
     return json.loads(response.choices[0].message.content)
+
 
