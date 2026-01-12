@@ -1,7 +1,10 @@
 import streamlit as st
-import openai
 from director import generate_workflow
 from agents import run_agent
+from openai import OpenAI
+
+openai_client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
 
 st.set_page_config(page_title="Chorus Layer", layout="wide")
 st.title("Chorus Layer — AI Operations Manager")
