@@ -1,4 +1,6 @@
-import openai
+from openai import OpenAI
+
+client = OpenAI()
 
 def run_agent(agent_name, task, context):
     prompts = {
@@ -13,7 +15,7 @@ Return concise findings only.
 You are an Operations Agent.
 Task: {task}
 Context: {context}
-Reason about processes, rules, or inventory.
+Reason about processes, rules, or logistics.
 Flag uncertainty clearly.
 """,
 
@@ -26,9 +28,12 @@ DO NOT send it. Draft only.
 """
     }
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": prompts[agent_name]}]
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", "content": prompts[agent_name]}
+        ]
     )
 
-    return response["choices"][0]["message"]["content"]
+    return response.choices[0].message.content
+
