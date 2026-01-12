@@ -1,8 +1,7 @@
 from openai import OpenAI
 import json
-import streamlit as st
 
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+client = OpenAI()  # API key is read automatically from environment
 
 def generate_workflow(user_goal):
     prompt = f"""
@@ -43,5 +42,6 @@ User Goal:
     )
 
     return json.loads(response.choices[0].message.content)
+
 
 
