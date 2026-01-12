@@ -3,9 +3,6 @@ import streamlit as st
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-
-client = OpenAI()
-
 def run_agent(agent_name, task, context):
     prompts = {
         "Research Agent": f"""
