@@ -1,5 +1,7 @@
-import openai
+from openai import OpenAI
 import json
+
+client = OpenAI()
 
 def generate_workflow(user_goal):
     prompt = f"""
@@ -34,9 +36,12 @@ User Goal:
 {user_goal}
 """
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": prompt}]
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
     )
 
-    return json.loads(response["choices"][0]["message"]["content"])
+    return json.loads(response.choices[0].message.content)
+
