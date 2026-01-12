@@ -1,8 +1,8 @@
 from openai import OpenAI
+import json
 import streamlit as st
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-
 
 def generate_workflow(user_goal):
     prompt = f"""
@@ -39,9 +39,7 @@ User Goal:
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[
-            {"role": "user", "content": prompt}
-        ]
+        messages=[{"role": "user", "content": prompt}]
     )
 
     return json.loads(response.choices[0].message.content)
