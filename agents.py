@@ -16,7 +16,7 @@ Return concise findings only.
 You are an Operations Agent.
 Task: {task}
 Context: {context}
-Reason about processes, rules, or logistics.
+Reason about internal processes, rules, or logistics.
 Flag uncertainty clearly.
 """,
 
@@ -31,10 +31,9 @@ DO NOT send it. Draft only.
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[
-            {"role": "user", "content": prompts[agent_name]}
-        ]
+        messages=[{"role": "user", "content": prompts[agent_name]}]
     )
 
     return response.choices[0].message.content
+
 
