@@ -1,7 +1,6 @@
 from openai import OpenAI
-import streamlit as st
 
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+client = OpenAI()
 
 def run_agent(agent_name, task, context):
     prompts = {
@@ -17,7 +16,6 @@ You are an Operations Agent.
 Task: {task}
 Context: {context}
 Reason about internal processes, rules, or logistics.
-Flag uncertainty clearly.
 """,
 
         "Communication Agent": f"""
@@ -25,7 +23,7 @@ You are a Communication Agent.
 Task: {task}
 Context: {context}
 Draft a professional message.
-DO NOT send it. Draft only.
+DO NOT send it.
 """
     }
 
@@ -35,5 +33,6 @@ DO NOT send it. Draft only.
     )
 
     return response.choices[0].message.content
+
 
 
