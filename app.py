@@ -2,26 +2,28 @@ import streamlit as st
 from director import generate_workflow
 from agents import run_agent
 
-
-
 st.set_page_config(page_title="Chorus Layer", layout="wide")
 st.title("Chorus Layer — AI Operations Manager")
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
-
 if "workflow" not in st.session_state:
     st.session_state.workflow = None
+
 if "logs" not in st.session_state:
     st.session_state.logs = []
 
-user_goal = st.text_area("What do you want the AI team to do?", height=200)
+user_goal = st.text_area(
+    "What do you want the AI team to do?",
+    height=200,
+    placeholder="Example: Respond to a new Instagram DM asking about available dining tables."
+)
 
 if st.button("Generate Plan"):
-    st.session_state.workflow = generate_workflow(user_goal)
-    st.session_state.logs = []
+    if user_goal.strip():
+        st.session_state.workflow = generate_workflow(user_goal)
+        st.session_state.logs = []
 
 if st.session_state.workflow:
-    st.subheader("Director Plan")
+    st.subheader("🧠 Director Plan")
     st.json(st.session_state.workflow)
 
     if st.button("Run Workflow"):
@@ -37,19 +39,22 @@ if st.session_state.workflow:
                 "agent": agent,
                 "task": task,
                 "output": output,
-                "approval": step["requires_approval"]
+                "requires_approval": step["requires_approval"]
             })
 
             if step["requires_approval"]:
-                st.warning("Approval Required")
+                st.warning("Human Approval Required")
                 st.write(output)
-                if not st.button("Approve Action"):
+                approved = st.button("Approve & Continue")
+                if not approved:
                     st.stop()
 
             context += f"\n{output}"
 
-    st.subheader("Execution Audit Log")
+    st.subheader("📜 Execution Audit Log")
+
     for log in st.session_state.logs:
         st.markdown(f"### {log['agent']}")
-        st.write("Task:", log["task"])
-        st.write("Output:", log["output"])
+        st.write("**Task:**", log["task"])
+        st.write("**Output:**", log["output"])
+
